@@ -1,5 +1,5 @@
 const mongoose=require('mongoose');
-const mongoURI="mongodb://localhost:27017";
+const mongoURI="mongodb://localhost:27017/?directConnection=true";
 
 
 const connectToMongo= async ()=>{
@@ -9,4 +9,4 @@ const connectToMongo= async ()=>{
 
 }
 
-module.exports=connectToMongo();
+module.exports=connectToMongo;
