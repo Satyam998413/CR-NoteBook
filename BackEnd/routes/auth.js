@@ -4,6 +4,13 @@ const router = express.Router();
 
 const { body, validationResult } = require('express-validator');
 // npm install --save express-validator
+// npm i bcryptjs password +salt+papper=hash genrate
+// npm i jsonwebtoken ek tarika hai user ko verify krne ka bar bar user nii send krega
+const bcrypt = require('bcryptjs');
+var jwt = require('jsonwebtoken');
+
+
+const JWT_SECRET="SATYAM$BARANWAL";
 
 // Create a user using post ./api/auth/createuser login Does not required auth
 router.post("/createuser/", [
@@ -29,18 +36,33 @@ router.post("/createuser/", [
   }
   // check user is this email already exist or not
   try {
-    let user = res.findOne({ email: req.body.email });
+    let user =await User.findOne({ email: req.body.email });
     console.log(user);
     if (user) {
       return res.status(400).json({ error: "Sorry a user with this email already exist" })
     }
 
+
+    const salt=await bcrypt.genSalt(10);
+    secPass=await bcrypt.hash( req.body.password,salt);
+
+
+    // Create User
     user = await User.create({
-      username: req.body.name,
+      name: req.body.name,
+      password: secPass,
       email: req.body.email,
-      password: req.body.password,
-    })
-    res.json(user);
+    });
+
+    const data = {
+      user: {
+        id: user.id
+      }
+    }
+
+    const authtoken=jwt.sign(data,JWT_SECRET);
+    console.log(authtoken);
+    res.json({authtoken:authtoken});
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Some error occured");
@@ -53,4 +75,4 @@ router.post("/createuser/", [
 
 })
 
-module.exports = router;
+module.exports = router
