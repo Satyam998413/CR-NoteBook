@@ -52,19 +52,10 @@ router.post("/addnote", fetchuser, [
 
 // route1 UPATE notes using put ./api/auth/deletenote LOGIN REQUIRED
 
-router.put("/updatenote/:id", fetchuser, [
-
-    body('title', 'enter a valid title').isLength({ min: 3 }),
-    body('description', 'Description Adds At least 5 character').isLength({ min: 5 }),
-
-], async (req, res) => {
+router.put("/updatenote/:id", fetchuser, async (req, res) => {
+    const { title, description, tag } = req.body;
     try {
-        const { title, description, tag } = req.body;
-        // Finds the validation errors in this request and wraps them in an object with handy functions
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
-        }
+       
         const newNote ={};
         if(title){
             newNote.title=title;
@@ -82,7 +73,7 @@ router.put("/updatenote/:id", fetchuser, [
         if(note.user.toString()!==req.user.id){return res.status(401).send("Not Allowed")}
         
         note=await Note.findByIdAndUpdate(req.param.id,{$set:newNote},{new:true});
-        res.json(note);
+        res.json({note});
     } catch (error) {
         console.error(error.message);
         res.status(500).send("Internal Server Error");
