@@ -9,6 +9,7 @@ import Navbar from './components/Navbar';
 import Alert from './components/Alert';
 import Signup from './components/Signup';
 import Contact from './components/Contact';
+import NoteState from './context/notes/NoteState';
 
 
 
@@ -19,6 +20,7 @@ import Contact from './components/Contact';
 
 function App() {
   return (
+    <NoteState>
     <BrowserRouter>
     
     <Navbar/>
@@ -34,6 +36,7 @@ function App() {
  
   
     </BrowserRouter>
+    </NoteState>
   );
 }
 
