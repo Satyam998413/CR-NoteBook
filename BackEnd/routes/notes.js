@@ -59,13 +59,13 @@ router.put("/updatenote/:id", fetchuser, async (req, res) => {
         const newNote ={};
         if(title){
             newNote.title=title;
-        }
+        };
         if(description){
             newNote.description=description;
-        }
+        };
         if(tag){
             newNote.tag=tag;
-        }
+        };
 
         // find the notes
         let note=await Note.findById(req.param.id);
@@ -83,7 +83,7 @@ router.put("/updatenote/:id", fetchuser, async (req, res) => {
 })
 // route1 Delete notes using delete ./api/auth/updatenote LOGIN REQUIRED
 
-router.put("/deletenote/:id", fetchuser, async (req, res) => {
+router.delete("/deletenote/:id", fetchuser, async (req, res) => {
     try {
         
         // Finds the validation errors in this request and wraps them in an object with handy functions

@@ -1,10 +1,9 @@
+import React from 'react';
 
+import Notes from './Notes';
 
-
-import React from 'react'
-
-export default function 
-Home() {
+export default function Home() {
+  
   return (
     <div>
       <h1>Add a Notes</h1>
@@ -24,8 +23,7 @@ Home() {
         </div>
         <button type="submit" className="btn btn-primary m-2">Submit</button>
       </form>
-      <div class="container my-3"></div>
-      <h1>Your's Notes Here</h1>
-    </div>
+      <Notes/>
+      </div>
   )
 }
