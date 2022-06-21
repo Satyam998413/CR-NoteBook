@@ -20,6 +20,7 @@ router.post("/createuser/", [
   body('password', 'password must bec at least 5 charcters.').isLength({ min: 5 })
 
 ], async (req, res) => {
+  let success = false;
   // obj={
   //     number:1,
   //     name:"Satyam"
@@ -33,14 +34,14 @@ router.post("/createuser/", [
   // Finds the validation errors in this request and wraps them in an object with handy functions
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
+    return res.status(400).json({ success,errors: errors.array() });
   }
   // check user is this email already exist or not
   try {
     let user = await User.findOne({ email: req.body.email });
     console.log(user);
     if (user) {
-      return res.status(400).json({ error: "Sorry a user with this email already exist" })
+      return res.status(400).json({success, error: "Sorry a user with this email already exist" })
     }
 
 
@@ -62,8 +63,9 @@ router.post("/createuser/", [
     }
 
     const authtoken = jwt.sign(data, JWT_SECRET);
+    success = true;
     console.log(authtoken);
-    res.json({ authtoken: authtoken });
+    res.json({success, authtoken: authtoken });
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Internal Server Error");

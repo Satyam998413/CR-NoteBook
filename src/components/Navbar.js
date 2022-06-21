@@ -1,11 +1,16 @@
 
 import {  Link,useLocation } from "react-router-dom";
 import React from "react";
-
+// import { unstable_HistoryRouter } from "react-router-dom";
 
 
 
 export const Navbar = () => {
+  // let history=unstable_HistoryRouter();
+  const handleLogout=()=>{
+    localStorage.removeItem('token');
+     // history.push("/login");
+  }
   let location = useLocation();
     return (
         <div> 
@@ -26,17 +31,16 @@ export const Navbar = () => {
         <li className="nav-item">
           <Link className={`nav-link ${location.pathname==="/contact"?"active":""}`} aria-current="page" to="/contact">Contact Us</Link>
         </li>
-        <li className="nav-item">
-          <Link className={`nav-link ${location.pathname==="/"?"active":""}`} aria-current="page" to="/">Home</Link>
-        </li>
+        
        
         
         
       </ul>
-      <form className="d-flex">
-        <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-        <button className="btn btn-outline-success" type="submit">Search</button>
-      </form>
+      {!localStorage.getItem('token')? <form className="d-flex">
+
+        <Link to="/login"className="btn btn-primary mx-1" role="button">Login</Link>
+        <Link  to="/signup" className="btn btn-primary mx-1" role="button">SignUp</Link>
+      </form>:<button className="btn btn-primary" onClick={handleLogout}>Logout</button>}
     </div>
   </div>
 </nav>
